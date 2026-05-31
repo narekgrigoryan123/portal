@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Portal Esports Arena | Компьютерный клуб в Ереване</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0c0d10;
+      --surface: #13151a;
+      --surface-2: #1c1f27;
+      --accent: #c8f044;
+      --accent-dim: rgba(200, 240, 68, 0.12);
+      --accent-glow: rgba(200, 240, 68, 0.25);
+      --text: #eceef2;
+      --text-muted: #7a7f8e;
+      --border: rgba(255,255,255,0.07);
+      --radius: 16px;
+      --radius-lg: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(12, 13, 16, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      transition: color 0.2s;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    @media (max-width: 700px) {
+      .nav-inner { flex-direction: column; gap: 12px; align-items: flex-start; }
+      .nav-links { gap: 1.2rem; overflow-x: auto; width: 100%; padding-bottom: 4px; }
+      .nav-links a { white-space: nowrap; }
+    }
+
+    section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 40px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 800px) {
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+
+    .hero-main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-main::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-main h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .hero-main h1 span { color: var(--accent); }
+
+    .hero-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 20px 0 28px;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .hero-meta-row .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .rating-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-glow);
+      color: var(--accent);
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #0c0d10;
+      padding: 14px 28px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+
+    .hero-side {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .info-card .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .info-card .value {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .new-card {
+      background: linear-gradient(135deg, #1a1e12 0%, #1c2310 100%);
+      border: 1px solid rgba(200, 240, 68, 0.2);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .new-card .badge {
+      background: var(--accent);
+      color: #0c0d10;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 40px;
+    }
+
+    .new-card p {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 700px) {
+      .plans-grid { grid-template-columns: 1fr; }
+    }
+
+    .plan-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-card:hover {
+      border-color: rgba(200, 240, 68, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .plan-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(160deg, #16191f 0%, #131a0f 100%);
+    }
+
+    .plan-card.featured::before {
+      content: 'Популярный';
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: var(--accent);
+      color: #0c0d10;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 40px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .plan-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .plan-hours {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+
+    .plan-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+
+    .plan-price span {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .plan-features {
+      list-style: none;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .plan-features li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-item {
+      border-radius: var(--radius);
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+      display: block;
+    }
+
+    .gallery-item img:hover { transform: scale(1.04); }
+
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 700px) {
+      .contacts-grid { grid-template-columns: 1fr; }
+    }
+
+    .contact-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+
+    .contact-block h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contact-row:last-child { border-bottom: none; }
+
+    .contact-row .key {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      min-width: 90px;
+      padding-top: 2px;
+    }
+
+    .contact-row .val {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .tg-block {
+      background: linear-gradient(135deg, #12181e 0%, #0e1520 100%);
+      border: 1px solid rgba(38, 150, 230, 0.2);
+    }
+
+    .tg-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #2196F3;
+      color: white;
+      padding: 12px 22px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-top: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .tg-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(33, 150, 243, 0.3);
+    }
+
+    .map-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 16px;
+      height: 160px;
+    }
+
+    .map-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .story-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+    }
+
+    .story-card p {
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .story-card p:last-child { margin-bottom: 0; }
+
+    .story-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 20px 0;
+    }
+
+    footer {
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer strong { color: var(--accent); }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      width: 90%;
+      max-width: 460px;
+      position: relative;
+    }
+
+    .modal-box h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .modal-box p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 20px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .field input, .field select {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    .field input:focus, .field select:focus {
+      border-color: var(--accent);
+    }
+
+    .field select option { background: var(--surface-2); }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 13px 22px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.2s;
+    }
+
+    .btn-secondary:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="logo">PORTAL <span>ESPORTS</span></div>
+    <ul class="nav-links">
+      <li><a href="#home">Главная</a></li>
+      <li><a href="#abonements">Абонементы</a></li>
+      <li><a href="#gallery">Галерея</a></li>
+      <li><a href="#contacts">Контакты</a></li>
+      <li><a href="#about">О клубе</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+
+    <section id="home">
+      <div class="hero-grid">
+        <div class="hero-main">
+          <div class="rating-chip">★★★★★ 4.8 &nbsp;·&nbsp; 115 отзывов</div>
+          <h1>Portal<br><span>Esports</span><br>Arena</h1>
+          <div class="hero-meta">
+            <div class="hero-meta-row">
+              <span class="dot"></span>
+              16 Yeznik Koghbatsi St, Yerevan 0010
+            </div>
+            <div class="hero-meta-row">
+              <span class="dot"></span>
+              Круглосуточно · 043 828204
+            </div>
+          </div>
+          <button class="btn" id="openModalBtn">Забронировать компьютер</button>
+        </div>
+        <div class="hero-side">
+          <div class="info-card">
+            <div class="label">Режим работы</div>
+            <div class="value">Круглосуточно, 7 дней</div>
+          </div>
+          <div class="info-card">
+            <div class="label">Зоны</div>
+            <div class="value">Стандарт · Комфорт · VIP</div>
+          </div>
+          <div class="new-card">
+            <div>
+              <span class="badge">Новинка</span>
+              <p style="margin-top: 6px;">3 игровых ПК с мониторами 400 Гц</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="abonements">
+      <div class="section-label">Тарифы</div>
+      <div class="section-title">Абонементы</div>
+      <div class="plans-grid">
+        <div class="plan-card">
+          <div class="plan-name">Старт</div>
+          <div class="plan-hours">3 часа · 08:00 – 16:00</div>
+          <div class="plan-price">00000 <span>AMD</span></div>
+          <ul class="plan-features">
+            <li>Стандартная зона</li>
+            <li>Для casual-геймеров</li>
+          </ul>
+        </div>
+        <div class="plan-card featured">
+          <div class="plan-name">Стандарт</div>
+          <div class="plan-hours">5 часов · 08:00 – 16:00</div>
+          <div class="plan-price">00000 <span>AMD</span></div>
+          <ul class="plan-features">
+            <li>Стандартная или комфорт-зона</li>
+            <li>Оптимальный выбор</li>
+          </ul>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Премиум</div>
+          <div class="plan-hours">8 часов · 08:00 – 16:00</div>
+          <div class="plan-price">00000 <span>AMD</span></div>
+          <ul class="plan-features">
+            <li>Любая зона на выбор</li>
+            <li>Полный игровой день</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="section-label">Интерьер</div>
+      <div class="section-title">Галерея</div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="img1.webp" alt=""></div>
+        <div class="gallery-item"><img src="img2.webp" alt=""></div>
+        <div class="gallery-item"><img src="img3.webp" alt=""></div>
+        <div class="gallery-item"><img src="img4.webp" alt=""></div>
+        <div class="gallery-item"><img src="img5.webp" alt=""></div>
+        <div class="gallery-item"><img src="img6.webp" alt=""></div>
+        <div class="gallery-item"><img src="img7.webp" alt=""></div>
+        <div class="gallery-item"><img src="img8.webp" alt=""></div>
+      </div>
+    </section>
+
+    <section id="contacts">
+      <div class="section-label">Связь</div>
+      <div class="section-title">Контакты</div>
+      <div class="contacts-grid">
+        <div class="contact-block">
+          <h3>Реквизиты</h3>
+          <div class="contact-row">
+            <span class="key">Адрес</span>
+            <span class="val">16 Yeznik Koghbatsi St, Yerevan 0010</span>
+          </div>
+          <div class="contact-row">
+            <span class="key">Телефон</span>
+            <span class="val">043 828204</span>
+          </div>
+          <div class="contact-row">
+            <span class="key">Режим</span>
+            <span class="val">Круглосуточно</span>
+          </div>
+          <div class="map-wrap">
+            <iframe src="https://maps.app.goo.gl/edeTV6J3MWYKzNqbA" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+        <div class="contact-block tg-block">
+          <h3>Telegram</h3>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Официальный чат клуба — задайте вопрос администратору напрямую.</p>
+          <a href="https://t.me/+VK-mw1CkjHJjY2Yy" class="tg-btn" target="_blank">Перейти в Telegram</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="section-label">История</div>
+      <div class="section-title">О Portal Esports Arena</div>
+      <div class="story-card">
+        <p>##########################</p>
+        <hr class="story-divider">
+        <p>##########################</p>
+        <hr class="story-divider">
+        <p>##########################</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <strong>Portal Esports Arena</strong> — круглосуточная киберспортивная арена в Ереване.<br>
+  <span style="margin-top: 6px; display: block;">16 Yeznik Koghbatsi St &nbsp;·&nbsp; +374 43 828204</span>
+</footer>
+
+<div id="bookingModal" class="modal">
+  <div class="modal-box">
+    <h3>Бронирование ПК</h3>
+    <p>Укажите через сколько минут придёте (максимум 30). Администратор свяжется с вами.</p>
+    <div class="field">
+      <label>Ваше имя</label>
+      <input type="text" id="guestName" placeholder="Имя" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Телефон или Telegram ID</label>
+      <input type="tel" id="guestPhone" placeholder="+374 xx xxxxxx">
+    </div>
+    <div class="field">
+      <label>Зона</label>
+      <select id="pcType">
+        <option value="Standard">Стандартная зона</option>
+        <option value="Comfort">Комфорт зона</option>
+        <option value="VIP">VIP зона</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Через сколько минут (макс. 30)</label>
+      <input id="bookingTime" type="number" max="30" step="5" placeholder="15">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="submitBooking">Отправить</button>
+      <button class="btn-secondary" id="closeModalBtn">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const BOT_TOKEN = '8957560142:AAElvtz8_wCmi53KDTcAV1Rjq7lf82JeUus';
+    const CHAT_ID = '1332417357';
+
+    const modal = document.getElementById('bookingModal');
+    const openBtn = document.getElementById('openModalBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const submitBtn = document.getElementById('submitBooking');
+
+    function openModal() { modal.style.display = 'flex'; }
+    function closeModal() { modal.style.display = 'none'; }
+
+    if (openBtn) openBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    window.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+
+    async function sendToTelegram(message) {
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
+        });
+        const data = await response.json();
+        return data.ok;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    if (submitBtn) {
+      submitBtn.addEventListener('click', async function() {
+        const guestName = document.getElementById('guestName')?.value.trim();
+        const phone = document.getElementById('guestPhone')?.value.trim();
+        const pcType = document.getElementById('pcType')?.value;
+        const bookingTimeRaw = document.getElementById('bookingTime')?.value;
+
+        if (!guestName) { alert('Пожалуйста, укажите имя.'); return; }
+        if (!phone) { alert('Укажите номер телефона или Telegram ID.'); return; }
+        if (!bookingTimeRaw) { alert('Укажите время.'); return; }
+
+        const message = `🖥 Новая заявка на бронь в Portal Esports Arena\n\n👤 Имя: ${guestName}\n📞 Контакт: ${phone}\n🎮 Зона: ${pcType}\n⏰ Через: ${bookingTimeRaw} мин.`;
+        const sent = await sendToTelegram(message);
+
+        if (sent) {
+          alert('Заявка отправлена. Администратор свяжется с вами в ближайшее время.');
+          closeModal();
+          document.getElementById('guestName').value = '';
+          document.getElementById('guestPhone').value = '';
+          document.getElementById('bookingTime').value = '';
+        } else {
+          alert('Не удалось отправить заявку. Свяжитесь с клубом через Telegram напрямую.');
+        }
+      });
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const hash = this.getAttribute('href');
+        if (hash && hash.startsWith('#')) {
+          e.preventDefault();
+          const el = document.getElementById(hash.substring(1));
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
