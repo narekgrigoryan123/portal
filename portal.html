@@ -575,6 +575,15 @@
       border-color: var(--accent);
     }
 
+    .field select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7f8e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
     .field select option { background: var(--surface-2); }
 
     .modal-actions {
@@ -736,11 +745,11 @@
       <div class="section-label">История</div>
       <div class="section-title">О Portal Esports Arena</div>
       <div class="story-card">
-        <p>##########################</p>
+        <p>###</p>
         <hr class="story-divider">
-        <p>##########################</p>
+        <p>###</p>
         <hr class="story-divider">
-        <p>##########################</p>
+        <p>###</p>
       </div>
     </section>
 
@@ -762,7 +771,7 @@
     </div>
     <div class="field">
       <label>Телефон или Telegram ID</label>
-      <input type="tel" id="guestPhone" placeholder="+374 xx xxxxxx">
+      <input type="tel" id="guestPhone">
     </div>
     <div class="field">
       <label>Зона</label>
@@ -774,7 +783,15 @@
     </div>
     <div class="field">
       <label>Через сколько минут (макс. 30)</label>
-      <input id="bookingTime" type="number" max="30" step="5" placeholder="15">
+      <select id="bookingTime">
+        <option value="" disabled selected>Выберите время</option>
+        <option value="5">5 минут</option>
+        <option value="10">10 минут</option>
+        <option value="15">15 минут</option>
+        <option value="20">20 минут</option>
+        <option value="25">25 минут</option>
+        <option value="30">30 минут</option>
+      </select>
     </div>
     <div class="modal-actions">
       <button class="btn" id="submitBooking">Отправить</button>
